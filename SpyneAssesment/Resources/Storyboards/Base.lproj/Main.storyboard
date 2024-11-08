@@ -1,24 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Capture Photo View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="CapturePhotoViewController" customModule="SpyneAssesment" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sgi-2v-Wla">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4wz-FJ-w6L">
+                                        <rect key="frame" x="155.33333333333334" y="769" width="82.333333333333343" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="capture"/>
+                                        <connections>
+                                            <action selector="captureButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Zt-i2-Yl2"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfV-3z-hFf">
+                                        <rect key="frame" x="316.33333333333331" y="100" width="60.666666666666686" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="flash"/>
+                                        <connections>
+                                            <action selector="flashButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z4E-m0-f54"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CUO-uh-xQp">
+                                        <rect key="frame" x="268.66666666666669" y="185" width="108.33333333333331" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="flip camera"/>
+                                        <connections>
+                                            <action selector="switchCameraButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TXd-5a-rJ0"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="CUO-uh-xQp" secondAttribute="trailing" constant="16" id="BfW-jI-WZt"/>
+                                    <constraint firstAttribute="trailing" secondItem="qfV-3z-hFf" secondAttribute="trailing" constant="16" id="Nek-P3-ROP"/>
+                                    <constraint firstItem="CUO-uh-xQp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sgi-2v-Wla" secondAttribute="leading" constant="20" symbolic="YES" id="fN7-U5-Dwq"/>
+                                    <constraint firstItem="qfV-3z-hFf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sgi-2v-Wla" secondAttribute="leading" constant="20" symbolic="YES" id="h3C-C7-6KE"/>
+                                    <constraint firstAttribute="bottom" secondItem="4wz-FJ-w6L" secondAttribute="bottom" constant="48" id="ire-DS-dV3"/>
+                                    <constraint firstItem="qfV-3z-hFf" firstAttribute="top" secondItem="sgi-2v-Wla" secondAttribute="top" constant="100" id="rfq-o1-Q1J"/>
+                                    <constraint firstItem="4wz-FJ-w6L" firstAttribute="centerX" secondItem="sgi-2v-Wla" secondAttribute="centerX" id="w1H-nV-QZ8"/>
+                                    <constraint firstItem="CUO-uh-xQp" firstAttribute="top" secondItem="qfV-3z-hFf" secondAttribute="bottom" constant="50" id="xIf-Wt-4kP"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="sgi-2v-Wla" secondAttribute="bottom" id="QVh-qe-Mgo"/>
+                            <constraint firstItem="sgi-2v-Wla" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="V0R-R2-vSQ"/>
+                            <constraint firstItem="sgi-2v-Wla" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jci-tC-gZp"/>
+                            <constraint firstItem="sgi-2v-Wla" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="k4j-JA-a92"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="captureButton" destination="4wz-FJ-w6L" id="uLQ-pR-YXq"/>
+                        <outlet property="capturePreviewView" destination="sgi-2v-Wla" id="Oga-dr-I3T"/>
+                        <outlet property="flashButton" destination="qfV-3z-hFf" id="lYY-fI-eDN"/>
+                        <outlet property="switchCameraButton" destination="CUO-uh-xQp" id="LOx-tF-xrs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="45.038167938931295" y="-2.1126760563380285"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
