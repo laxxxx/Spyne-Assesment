@@ -7,6 +7,8 @@
 
 import AVFoundation
 import UIKit
+import RealmSwift
+import UserNotifications
 
 class CapturePhotoViewModel {
     // MARK: - Properties
@@ -16,6 +18,8 @@ class CapturePhotoViewModel {
     var previewLayer: AVCaptureVideoPreviewLayer!
     var isFlashOn: Bool = false
     var isUsingFrontCamera: Bool = false
+    
+    private let uploadService = UploadService()
     
     // MARK: - Setup Camera
     func setupCamera(completion: @escaping (AVCaptureVideoPreviewLayer?) -> Void) {
@@ -67,18 +71,11 @@ class CapturePhotoViewModel {
         // Toggle the flash state
         isFlashOn.toggle()
         
-        // Debugging output to check the flash state
-        print("Flash is \(isFlashOn ? "ON" : "OFF")")
-        
         // Ensure flash mode is applied only for the correct camera
         guard let device = currentDevice, device.hasFlash else {
             print("Device doesn't support flash or it's unavailable for the current camera")
             return
         }
-        
-        // Update flash mode in the settings for the next photo capture
-        // No need to lock the device configuration anymore since we're using AVCapturePhotoSettings
-        print("Flash mode set to: \(isFlashOn ? "ON" : "OFF")")
     }
     
     // MARK: - Switch Camera
@@ -91,16 +88,55 @@ class CapturePhotoViewModel {
     // MARK: - Capture Photo
     func capturePhoto(delegate: AVCapturePhotoCaptureDelegate) {
         guard let device = currentDevice else { return }
+        
+        // Create new AVCapturePhotoSettings each time a photo is captured
+        let settings = AVCapturePhotoSettings()
+        
+        // Apply the flash mode based on the current flash state
+        if device.hasFlash {
+            settings.flashMode = isFlashOn ? .on : .off
+        }
+        
+        // Capture the photo with the new settings
+        photoOutput.capturePhoto(with: settings, delegate: delegate)
+    }
+    
+    // MARK: save Image To Realm
+    
+    func saveImageToRealm(_ image: UIImage) {
+        // Get the documents directory path
+        guard let imageData = image.jpegData(compressionQuality: 0.8),
+              let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Failed to get documents directory or convert image data.")
+            return
+        }
+        
+        // Generate a unique image name
+        let imageName = "IMG_\(UUID().uuidString).jpg"
+        let imageURL = documentsDirectory.appendingPathComponent(imageName)
+        
+        // Save the image file to the documents directory
+        do {
+            try imageData.write(to: imageURL)
+            print("Image saved to documents directory: \(imageURL.path)")
             
-            // Create new AVCapturePhotoSettings each time a photo is captured
-            let settings = AVCapturePhotoSettings()
+            // Create a new ImageDataModel instance with metadata
+            let imageDataModel = ImageDataModel()
+            imageDataModel.imageName = imageName
+            imageDataModel.imageURI = imageURL.path
+            imageDataModel.captureDate = Date()
+            imageDataModel.uploadStatus = "Pending"
             
-            // Apply the flash mode based on the current flash state
-            if device.hasFlash {
-                settings.flashMode = isFlashOn ? .on : .off
+            // Save the metadata to Realm
+            let realm = try Realm()
+            try realm.write {
+                realm.add(imageDataModel)
             }
             
-            // Capture the photo with the new settings
-            photoOutput.capturePhoto(with: settings, delegate: delegate)
+            print("Image metadata saved to Realm.")
+            
+        } catch {
+            print("Error saving image: \(error.localizedDescription)")
+        }
     }
 }

@@ -93,6 +93,7 @@ class CapturePhotoViewController: UIViewController, AVCapturePhotoCaptureDelegat
         }
 
         photoPreviewView.onProceed = { [weak self] in
+            photoPreviewView.removeFromSuperview()
             self?.handleCapturedImage(image)
         }
 
@@ -101,12 +102,20 @@ class CapturePhotoViewController: UIViewController, AVCapturePhotoCaptureDelegat
     }
     
     private func handleCapturedImage(_ image: UIImage) {
-        // For now, simply print a message
-        print("Image captured successfully. Ready to proceed.")
-        // You can perform further actions like saving the image or uploading it here.
+        print("Proceed button tapped. Saving image to Realm with metadata.")
+           
+           // Save image to Realm database using ViewModel
+           viewModel.saveImageToRealm(image)
+           // Navigate to the Image List Screen
+           navigateToImageListScreen()
     }
-
-
+    
+    private func navigateToImageListScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let imageListVC = storyboard.instantiateViewController(withIdentifier: "ImageListViewController") as? ImageListViewController {
+            navigationController?.pushViewController(imageListVC, animated: true)
+        }
+    }
 
     // MARK: - Alert for Permission
     private func showPermissionAlert() {
