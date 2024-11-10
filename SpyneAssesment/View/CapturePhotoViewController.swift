@@ -80,7 +80,33 @@ class CapturePhotoViewController: UIViewController, AVCapturePhotoCaptureDelegat
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let imageData = photo.fileDataRepresentation(),
               let image = UIImage(data: imageData) else { return }
+        self.showPhotoPreview(with: image)
     }
+    
+    private func showPhotoPreview(with image: UIImage) {
+        let photoPreviewView = PhotoPreviewView(frame: self.view.bounds)
+        photoPreviewView.previewImageView.image = image
+
+        // Handle button actions
+        photoPreviewView.onRetake = { [weak self] in
+            photoPreviewView.removeFromSuperview()
+        }
+
+        photoPreviewView.onProceed = { [weak self] in
+            self?.handleCapturedImage(image)
+        }
+
+        // Add the preview view to the main view
+        self.view.addSubview(photoPreviewView)
+    }
+    
+    private func handleCapturedImage(_ image: UIImage) {
+        // For now, simply print a message
+        print("Image captured successfully. Ready to proceed.")
+        // You can perform further actions like saving the image or uploading it here.
+    }
+
+
 
     // MARK: - Alert for Permission
     private func showPermissionAlert() {
